@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "440505053659",
+    "project_id": "contacts-app-d1d9f",
+    "storage_bucket": "contacts-app-d1d9f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:440505053659:android:45c3c944acd253d956f7fe",
+        "android_client_info": {
+          "package_name": "com.example.ecommerce_admin_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBob8pULiO8U_TmPjkK2c8Qig-4V-fxpho"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
