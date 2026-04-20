@@ -1,3 +1,4 @@
+import 'package:ecommerce_admin_app/controllers/auth_service.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -15,7 +16,10 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context){
     return Scaffold(
-      body: Column(children: [
+      body: SingleChildScrollView(
+      child: Form(
+      key: formKey,
+      child: Column(children: [
         SizedBox(
           height: 120,
         ),
@@ -60,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
         obscureText: true,
         decoration: InputDecoration(
           border: OutlineInputBorder(),
-          label: Text("Password")
+          label: Text("Password"),
         ),
       )),
       SizedBox(
@@ -68,7 +72,39 @@ class _LoginPageState extends State<LoginPage> {
       ),
       Row( mainAxisAlignment: MainAxisAlignment.end,children: [
         TextButton(onPressed: (){
-
+          showDialog(context: context, builder: (builder) {
+            return AlertDialog(
+              title: Text("Forget Password"),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Enter you email"),
+                  SizedBox(height: 10,),
+                  TextFormField(controller: _emailController, decoration: InputDecoration(label: Text("Email"), border: OutlineInputBorder()),),
+                ],
+              ),
+              actions: [
+                TextButton(onPressed: (){
+                  Navigator.pop(context);}, child: Text("Cancel")),
+                  TextButton(onPressed: ()async{
+                    if(_emailController.text.isEmpty){
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Email cannot be empty")));
+                      return;
+                    }
+                    await AuthService().resetPassword(_emailController.text).then((value){
+                      if(value=="Mail Sent"){
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Password reset link sent to your email")));
+                      Navigator.pop(context);
+                      }
+                      else{
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(value)));
+                      }
+                    });
+                  }, child: Text("submit")),
+              ]
+            );
+          });
         }, child: Text("Forget Password")),
       ],),
       SizedBox(
@@ -79,7 +115,26 @@ class _LoginPageState extends State<LoginPage> {
         width: MediaQuery.of(context).size.width * .9,
         child: ElevatedButton(
           onPressed: (){
-
+            if (formKey.currentState!.validate()){
+              AuthService()
+              .loginWithEmail(
+                _emailController.text, _passwordController.text)
+                .then((value) {
+                  if (value == "Login Succesful") {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Login Successful")));
+                    Navigator.restorablePushNamedAndRemoveUntil(context, "/home", (route) => false);
+                  } else{
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text(
+                        value,
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      backgroundColor: Colors.red.shade400,
+                      ));
+                  }
+                });                ;
+            }
           },
           child: Text(
             "Login",

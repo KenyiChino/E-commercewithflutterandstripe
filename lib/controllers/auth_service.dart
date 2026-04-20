@@ -30,7 +30,13 @@ class AuthService {
 
   // reset the password
   Future resetPassword(String email) async {
+    try{
     await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+    return "Nail Send";
+  }
+  on FirebaseAuthException catch(e){
+    return e.message.toString();
+  }
   }
 
   //check whether the user is sing in or not

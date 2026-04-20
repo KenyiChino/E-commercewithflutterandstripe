@@ -1,4 +1,6 @@
+import 'package:ecommerce_admin_app/controllers/auth_service.dart';
 import 'package:ecommerce_admin_app/firebase_options.dart';
+import 'package:ecommerce_admin_app/views/admin_home.dart';
 import 'package:ecommerce_admin_app/views/login.dart';
 import 'package:ecommerce_admin_app/views/signup.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -42,10 +44,40 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       routes: {
-        "/": (context)=> LoginPage(),
+        "/": (context)=> CheckUser(),
         "/login":(context)=> LoginPage(),
-        "/signup": (context) => SignupPage()
+        "/signup": (context) => SignupPage(),
+        "/home": (context) => AdminHome()
       },
     );
   }
 }
+
+class CheckUser extends StatefulWidget{
+  const CheckUser({super.key});
+
+  @override
+  State<CheckUser> createState() => _CheckUserState();
+}
+
+class _CheckUserState extends State<CheckUser> {
+
+  @override
+  void initState() {
+    AuthService().isLoggedIn().then((value) {
+      if (value) {
+        Navigator.pushReplacementNamed(context, "/home");
+      } else{
+        Navigator.pushReplacementNamed(context, "/login");
+      }
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(body: Center(child: CircularProgressIndicator(),),);
+  }
+}
+
+
