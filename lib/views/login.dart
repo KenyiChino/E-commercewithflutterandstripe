@@ -98,7 +98,7 @@ class _LoginPageState extends State<LoginPage> {
                       Navigator.pop(context);
                       }
                       else{
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(value)));
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(value,style:TextStyle(color:Colors.white)), backgroundColor: Colors.red.shade400,));
                       }
                     });
                   }, child: Text("submit")),

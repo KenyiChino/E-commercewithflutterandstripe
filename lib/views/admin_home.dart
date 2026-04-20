@@ -28,7 +28,7 @@ class _AdminHomeState extends State<AdminHome> {
             height: 235,
             padding: EdgeInsets.all(12),
             margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-            decoration: BoxDecoration(color: Colors.grey.shade200,borderRadius: BorderRadius.circular(10))),
+            decoration: BoxDecoration(color: Colors.deepPurple.shade100,borderRadius: BorderRadius.circular(10))),
             child: Column(
               CrossAxisAlignment: CrossAxisAlignment.start,
               MainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -55,11 +55,13 @@ class _AdminHomeState extends State<AdminHome> {
       ),
       Row(
       children: [
-      HomeButton(onTap:(){},name:"Categories"),
-      HomeButton(onTap:(){}, name:"Coupons"),
+      HomeButton(onTap: (){
+        Navigator.pushNamed(context,"/category");
+      },name:"Categories"),
+      HomeButton(onTap: (){}, name:"Coupons"),
       ],
       ),
     ],), 
-    );
-  }
+    ),
+  };
 }
