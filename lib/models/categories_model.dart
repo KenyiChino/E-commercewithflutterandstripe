@@ -4,7 +4,7 @@ class CategoriesModel{
   String name, image,id;
 int priority;
 
-CategoriesModels({
+CategoriesModel({
     required this.id,
     required this.name,
     required this.image,
@@ -17,12 +17,12 @@ CategoriesModels({
       name: json["name"]??"",
       image: json["image"]??"",
       priority: json["priority"]??0,
-      id: id??"".
+      id: id??"",
     );
   }
 
   // Convert List<QueryDocumentSnapshot> to List<CategoriesModel>
-  static List<CategoriesModel> fromJsonList(List<QueryDocumentSnapshot>list){
+  static List<CategoriesModel> fromJsonList(List<QueryDocumentSnapshot> list){
     return list.map((e) => CategoriesModel.fromJson(e.data() as Map<String, dynamic>, e.id)).toList();
   }
 }

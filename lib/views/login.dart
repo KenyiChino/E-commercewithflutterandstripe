@@ -12,7 +12,6 @@ class _LoginPageState extends State<LoginPage> {
   final formKey = GlobalKey<FormState>();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
-
   @override
   Widget build(BuildContext context){
     return Scaffold(
@@ -92,30 +91,33 @@ class _LoginPageState extends State<LoginPage> {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Email cannot be empty")));
                       return;
                     }
-                    await AuthService().resetPassword(_emailController.text).then((value){
+                    await AuthService().resetPassword(_emailController.text).then( (value) {
                       if(value=="Mail Sent"){
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Password reset link sent to your email")));
                       Navigator.pop(context);
                       }
                       else{
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(value,style:TextStyle(color:Colors.white)), backgroundColor: Colors.red.shade400,));
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(value,style:TextStyle(color:Colors.white),), backgroundColor: Colors.red.shade400,));
                       }
                     });
-                  }, child: Text("submit")),
+                  }, child: Text("Submit")),
               ]
             );
           });
         }, child: Text("Forget Password")),
       ],),
       SizedBox(
-        height:10,
+        height: 10,
       ),
       SizedBox(
         height: 60,
         width: MediaQuery.of(context).size.width * .9,
         child: ElevatedButton(
+
+
+
           onPressed: (){
-            if (formKey.currentState!.validate()){
+            if (formKey.currentState!.validate()) {
               AuthService()
               .loginWithEmail(
                 _emailController.text, _passwordController.text)
@@ -124,7 +126,7 @@ class _LoginPageState extends State<LoginPage> {
                     ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text("Login Successful")));
                     Navigator.restorablePushNamedAndRemoveUntil(context, "/home", (route) => false);
-                  } else{
+                  } else {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       content: Text(
                         value,
@@ -133,16 +135,19 @@ class _LoginPageState extends State<LoginPage> {
                       backgroundColor: Colors.red.shade400,
                       ));
                   }
-                });                ;
+                });
             }
           },
           child: Text(
             "Login",
             style: TextStyle(fontSize: 16),
           ))),
+
           SizedBox(
             height: 10,
           ),
+
+
 
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -156,6 +161,8 @@ class _LoginPageState extends State<LoginPage> {
             ],
           )
     ],),
+    ),
+      ),
     );
   }
 }

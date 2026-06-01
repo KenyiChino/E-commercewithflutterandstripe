@@ -9,7 +9,7 @@ class StorageService {
   // TO UPLOAD IMAGE TO FIREBASE STORAGE
   Future<String?> uploadImage(String path, BuildContext context) async {
     ScaffoldMessenger.of(context)
-    .showSnackBar(const SnackBar(content: Text("Uploding image...")));
+          .showSnackBar(const SnackBar(content: Text("Uploding image...")));
     print("Uploading image...");
     File file = File(path);
     try{
@@ -17,7 +17,7 @@ class StorageService {
       String fileName = DateTime.now().toString();
 
       //Create a reference to Firebase Storage
-      Reference ref = _storage.ref().child("images/$fileName");
+      Reference ref = _storage.ref().child("shop_images/$fileName");
 
       //Upload the file
       UploadTask uploadTask = ref.putFile(file);

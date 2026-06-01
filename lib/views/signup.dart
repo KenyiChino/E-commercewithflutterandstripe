@@ -12,7 +12,6 @@ class _SignupPageState extends State<SignupPage> {
   final formKey = GlobalKey<FormState>();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
-
   @override
   Widget build(BuildContext context){
     return Scaffold(
@@ -50,11 +49,11 @@ class _SignupPageState extends State<SignupPage> {
               )),
           ],
         ),
-            ),
-            SizedBox(
+      ),
+        SizedBox(
         height: 10,
-            ),
-            SizedBox(
+        ),
+        SizedBox(
         width: MediaQuery.of(context).size.width * .9,
         child: TextFormField(
           validator: (value) => value!.length < 8
@@ -102,6 +101,7 @@ class _SignupPageState extends State<SignupPage> {
               "Sign Up",
               style: TextStyle(fontSize: 16),
             ))),
+
             SizedBox(
               height: 10,
             ),
@@ -119,6 +119,7 @@ class _SignupPageState extends State<SignupPage> {
             )
             ],),
             ),
-      );
+      ),
+    );
   }
 }

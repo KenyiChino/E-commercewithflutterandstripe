@@ -1,7 +1,9 @@
 import 'package:ecommerce_admin_app/containers/dashboard_text.dart';
 import 'package:ecommerce_admin_app/containers/home_button.dart';
 import 'package:ecommerce_admin_app/controllers/auth_service.dart';
+import 'package:ecommerce_admin_app/providers/admin_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AdminHome extends StatefulWidget {
   const AdminHome({super.key});
@@ -16,8 +18,9 @@ class _AdminHomeState extends State<AdminHome> {
     return Scaffold(
       appBar: AppBar(title: Text("Admin Dashboard"),
       actions: [
-        IconButton(onPressed: (){
-          AuthService().logout();
+        IconButton(onPressed: () async{
+          Provider.of<AdminProvider>(context,listen: false).cancelProvider();
+          await AuthService().logout();
           Navigator.pushNamedAndRemoveUntil(context, "/login", (route)=> false);
         }, icon: Icon(Icons.logout))
       ],
@@ -25,43 +28,61 @@ class _AdminHomeState extends State<AdminHome> {
       body: SingleChildScrollView(
         child: Column(children: [
           Container(
-            height: 235,
+            height: 260,
             padding: EdgeInsets.all(12),
             margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-            decoration: BoxDecoration(color: Colors.deepPurple.shade100,borderRadius: BorderRadius.circular(10))),
-            child: Column(
-              CrossAxisAlignment: CrossAxisAlignment.start,
-              MainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            decoration: BoxDecoration(color: Colors.deepPurple.shade100,borderRadius: BorderRadius.circular(10)),
+            child: Consumer<AdminProvider>(
+              builder: (context, value ,child) =>
+              Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-            DashboardText(keyword: "Total Products", value:"100",),
-            DashboardText(keyword: "Total Products", value:"100",),
-            DashboardText(keyword: "Total Products", value:"100",),
-            DashboardText(keyword: "Total Products", value:"100",),
+            DashboardText(keyword: "Total Categories", value:"${value.categories.length}",),
+            DashboardText(keyword: "Total Products", value:"${value.products.length}",),
+            DashboardText(keyword: "Total Orders", value:"${value.totalOrders}",),
+            DashboardText(keyword: "Total Not Shipped yet", value:"${value.orderPendingProcess}",),
+            DashboardText(keyword: "Total Shipped", value:"${value.ordersOnTheWay}",),
+            DashboardText(keyword: "Total Delivered", value:"${value.ordersDelivered}",),
+            DashboardText(keyword: "Total Cancelled", value:"${value.ordersCancelled}",),
+
             ],
-            )),
-      ), //Container
-      
+            ),
+          )),
+      //Container
+      //Buttons for admins
       Row(
       children: [
-      HomeButton(onTap:(){},name:"All Orders"),
-      HomeButton(onTap:(){}, name:"All Products"),
+      HomeButton(onTap:(){
+        Navigator.pushNamed(context, "/orders");
+      },name:"Orders"),
+      HomeButton(onTap:(){
+        Navigator.pushNamed(context,"/products");
+      }, name:"Products"),
       ],
       ),
       Row(
       children: [
-      HomeButton(onTap:(){},name:"Promos"),
-      HomeButton(onTap:(){}, name:"Banners"),
+      HomeButton(onTap: (){
+        Navigator.pushNamed(context,"/promos",arguments: {"promo":true});
+      }, name:"Promos"),
+      HomeButton(onTap: (){
+        Navigator.pushNamed(context,"/promos",arguments: {"promo":false});
+      }, name: "Banners"),
       ],
       ),
       Row(
       children: [
       HomeButton(onTap: (){
         Navigator.pushNamed(context,"/category");
-      },name:"Categories"),
-      HomeButton(onTap: (){}, name:"Coupons"),
+      }, name:"Categories"),
+      HomeButton(onTap: (){
+        Navigator.pushNamed(context, "/coupons");
+      }, name:"Coupons"),
       ],
       ),
     ],), 
-    ),
-  };
+  ),
+  );
+  }
 }

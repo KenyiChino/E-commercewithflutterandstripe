@@ -32,7 +32,7 @@ class AuthService {
   Future resetPassword(String email) async {
     try{
     await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-    return "Nail Send";
+    return "Mail Send";
   }
   on FirebaseAuthException catch(e){
     return e.message.toString();
