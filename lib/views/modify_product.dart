@@ -33,7 +33,7 @@ class _ModifyProductState extends State<ModifyProduct> {
   void _pickImageAndCloudinaryUpload() async {
     image = await picker.pickImage(source: ImageSource.gallery);
     if (image !=null){
-      String? res = await uploadToCloudinary((image);
+      String? res = await uploadToCloudinary(image);
       setState(() {
         if (res !=null) {
           imageController.text = res;
@@ -87,7 +87,7 @@ Widget build(BuildContext context) {
     ),
     body: SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInset,.all(8.0),
+        padding: const EdgeInsets.all(8.0),
         child: Form(
           key: formKey,
           child: Column(
@@ -145,22 +145,44 @@ Widget build(BuildContext context) {
                   height: 10,
                 ),
                 
-              )
+              SizedBox(
+                height:  60,
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if(formKey.currentState!.validate()) {
+                      Map<String, dynamic> data = {
+                        "name": nameController.text,
+                        "old_price": int.parse(oldPriceController.text),
+                        "new_price": int.parse(newPriceController.text),
+                        "quantity": int.parse(quantityController.text),
+                        "category": categoryController.text,
+                        "desc":descController.text,
+                        "image": imageController.text
+                      };
 
-
-
-
-
-
-
-
-
-
+                      if (productId.isNotEmpty) {
+                        DbService()
+                        .updateProduct(docId: productId, data: data);
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Product Updated")));
+                      } else {
+                        DbService().createProduct(data: data);
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Product Added")));
+                      }
+                    }
+                  }, 
+                  child: Text(productId.isNotEmpty
+                  ? "Update Product"
+                  : "Add Product")))
             ],
-          )
-        )
+          ),
+        ),
       ),
-    )
-  )
+    ),
+  );
 }
 }
